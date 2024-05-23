@@ -1,12 +1,26 @@
 import express from "express";
+import cors from 'cors'
 
 const app = express()
+const cors = cors()
 const port = process.env.PORT || 3000
+
+
+var whitelist = ['https://papaya-douhua-3e80c4.netlify.app']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 // app.get('/', (req, res)=>{
 //     res.send("Server is ready")
 // })
-app.get("/api/facts", (req, res)=>{
+app.get("/api/facts", cors(corsOptions),(req, res)=>{
     const facts=[
         {
           "id": 1,
